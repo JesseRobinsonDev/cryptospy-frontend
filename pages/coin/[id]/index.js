@@ -1,5 +1,7 @@
 import axios from "axios";
 import Layout from "../../../components/layout/Layout";
+import Link from "next/link";
+import CoinPageTitleSection from "../../../components/coinpage/CoinPageTitleSection";
 
 export default function CoinPage(props) {
   console.log(props);
@@ -8,20 +10,15 @@ export default function CoinPage(props) {
       title={`${props.coinData.name} - CryptoSpy`}
       description={`Get the latest ${props.coinData.name} information, current price, market cap, volume, supply and data`}
     >
-      <main className="w-full text-white">
-        <img src={props.coinData.image.large} />
-        <div>{props.coinData.symbol}</div>
-        <div>{props.coinData.name}</div>
-        <div>{props.coinData.market_cap_rank}</div>
-        <div>{props.coinData.categories}</div>
-        <div>{props.coinData.market_data.total_supply}</div>
-        <div>{props.coinData.market_data.circulating_supply}</div>
-        <div>{props.coinData.market_data.max_supply}</div>
-        <div>{props.coinData.market_data.total_volume[props.currency]}</div>
-        <div>{props.coinData.market_data.market_cap[props.currency]}</div>
-        <div>{props.coinData.market_data.current_price[props.currency]}</div>
-        <div>{props.coinData.description[props.language]}</div>
-      </main>
+      <div className="w-full">
+        <CoinPageTitleSection
+          coinData={props.coinData}
+          language={props.language}
+          currency={props.currency}
+          tab="Overview"
+        />
+        <span>{props.coinData.description[props.language]}</span>
+      </div>
     </Layout>
   );
 }
@@ -136,11 +133,9 @@ export const getServerSideProps = async (context) => {
     validLanguages.includes(context.query.language)
       ? context.query.language
       : "en";
-  const coin = context.params.id;
+  const coin = context.params.id.toLowerCase();
   const coinData = await axios
-    .get(
-      `https://api.coingecko.com/api/v3/coins/${coin.toLowerCase()}?sparkline=true`
-    )
+    .get(`https://api.coingecko.com/api/v3/coins/${coin}?sparkline=true`)
     .then((response) => {
       return response.data;
     });
