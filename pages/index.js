@@ -249,7 +249,7 @@ export default function Home(props) {
               {props.categories.slice(0, 4).map((category) => (
                 <li
                   key={category.id}
-                  className="text-sm text-gray-400 font-bold px-3 py-1 bg-zinc-700 rounded-lg tracking-wide mt-1 hover:text-white hover:bg-blue-700 duration-300"
+                  className="px-3 py-1 text-sm font-bold text-gray-400 bg-zinc-700 rounded-md tracking-wide hover:bg-green-600 hover:text-white duration-300"
                 >
                   <Link
                     href={`${process.env.NEXT_PUBLIC_SITEURL}/?page=${props.page}&perpage=${props.perpage}&currency=${props.currency}&category=${category.id}`}
