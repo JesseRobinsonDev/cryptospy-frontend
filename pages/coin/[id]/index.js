@@ -17,7 +17,21 @@ export default function CoinPage(props) {
           currency={props.currency}
           tab="Overview"
         />
-        <span>{props.coinData.description[props.language]}</span>
+        <div>
+          <div className="flex flex-col">
+            <span className="text-4xl text-white font-light">
+              {props.coinData.name} Description
+            </span>
+            <p className="unreset text-zinc-400 font-semibold">
+              {parse(
+                props.coinData.description[props.language] == "" ||
+                  props.coinData.description[props.language] == undefined
+                  ? props.coinData.description["en"]
+                  : props.coinData.description[props.language]
+              )}
+            </p>
+          </div>
+        </div>
       </div>
     </Layout>
   );
