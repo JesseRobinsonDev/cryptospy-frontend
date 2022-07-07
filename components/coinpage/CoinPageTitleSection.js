@@ -1,6 +1,7 @@
 import CoinPageNavigationBar from "./CoinPageNavigationBar";
 import DropdownMenuInput from "../input/DropdownMenuInput";
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import axios from "axios";
 
 export default function CoinPageTitleSection(props) {
@@ -11,7 +12,7 @@ export default function CoinPageTitleSection(props) {
   const [coinInitial, setCoinInitial] = useState(0);
 
   useEffect(() => {
-    changePriceTimeframe("7d");
+    getCoinHistoryData(7);
   }, []);
 
   function changePriceTimeframe(timeframe) {
@@ -61,7 +62,7 @@ export default function CoinPageTitleSection(props) {
   }
 
   return (
-    <section className="p-2 flex flex-col">
+    <section className="flex flex-col gap-1">
       <div className="flex flex-row">
         <div className="w-5/12 flex flex-col gap-2">
           <div className="flex flex-row items-center gap-2">
@@ -73,29 +74,96 @@ export default function CoinPageTitleSection(props) {
               {props.coinData.symbol.toUpperCase()}
             </span>
           </div>
-          <span className="text-gray-400 bg-zinc-700 py-1 px-3 text-sm rounded-md font-bold">
-            Rank #{props.coinData.market_cap_rank}
-          </span>
           <div>
-            <span className="text-white">Categories</span>
-            <ul className="flex flex-row flex-wrap">
+            <span className="text-gray-400 bg-zinc-700 py-1 px-3 text-sm rounded-md font-bold">
+              Rank #{props.coinData.market_cap_rank}
+            </span>
+          </div>
+          <div>
+            <span className="text-white text-lg">Categories</span>
+            <ul className="flex flex-row flex-wrap gap-1">
               {props.coinData.categories.map((category) => (
-                <li
-                  key={category}
-                  className="text-gray-400 bg-zinc-700 py-1 px-3 text-sm rounded-md font-bold"
-                >
-                  {category}
+                <li key={category}>
+                  {category != null && (
+                    <Link
+                      href={`${
+                        process.env.NEXT_PUBLIC_SITEURL
+                      }/?category=${category
+                        .replaceAll(" ", "-")
+                        .toLowerCase()}`}
+                    >
+                      <a className="px-3 py-1 text-sm font-bold text-gray-400 bg-zinc-700 rounded-md tracking-wide hover:bg-green-600 hover:text-white duration-300">
+                        {category}
+                      </a>
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>
           </div>
-          <div>
-            <span className="text-white">Social Info</span>
+          <div className="flex flex-col">
+            <span className="text-white text-lg">Social Info</span>
+            <div className="flex flex-row flex-wrap gap-1">
+              {props.coinData.links.homepage[0] != null &&
+                props.coinData.links.homepage[0] != "" && (
+                  <Link href={props.coinData.links.homepage[0]}>
+                    <a className="px-3 py-1 text-sm font-bold text-gray-400 bg-zinc-700 rounded-md tracking-wide hover:bg-green-600 hover:text-white duration-300">
+                      {props.coinData.links.homepage[0]
+                        .replace("https", "")
+                        .replace("http", "")
+                        .replace(":", "")
+                        .replace("//", "")
+                        .replace("/", "")
+                        .replace("www.", "")
+                        .replace("/", "")
+                        .replace("/", "")
+                        .replace("/", "")
+                        .replace("/", "")}
+                    </a>
+                  </Link>
+                )}
+              {props.coinData.links.twitter_screen_name != null &&
+                props.coinData.links.twitter_screen_name != "" && (
+                  <Link
+                    href={`https://twitter.com/${props.coinData.links.twitter_screen_name}/`}
+                  >
+                    <a className="px-3 py-1 text-sm font-bold text-gray-400 bg-zinc-700 rounded-md tracking-wide hover:bg-green-600 hover:text-white duration-300">
+                      Twitter
+                    </a>
+                  </Link>
+                )}
+              {props.coinData.links.subreddit_url != null &&
+                props.coinData.links.subreddit_url != "" && (
+                  <Link href={props.coinData.links.subreddit_url}>
+                    <a className="px-3 py-1 text-sm font-bold text-gray-400 bg-zinc-700 rounded-md tracking-wide hover:bg-green-600 hover:text-white duration-300">
+                      Reddit
+                    </a>
+                  </Link>
+                )}
+              {props.coinData.links.facebook_username != null &&
+                props.coinData.links.facebook_username != "" && (
+                  <Link
+                    href={`https://www.facebook.com/${props.coinData.links.facebook_username}/`}
+                  >
+                    <a className="px-3 py-1 text-sm font-bold text-gray-400 bg-zinc-700 rounded-md tracking-wide hover:bg-green-600 hover:text-white duration-300">
+                      Facebook
+                    </a>
+                  </Link>
+                )}
+              {props.coinData.links.official_forum_url[0] != null &&
+                props.coinData.links.official_forum_url[0] != "" && (
+                  <Link href={props.coinData.links.official_forum_url[0]}>
+                    <a className="px-3 py-1 text-sm font-bold text-gray-400 bg-zinc-700 rounded-md tracking-wide hover:bg-green-600 hover:text-white duration-300">
+                      Forum
+                    </a>
+                  </Link>
+                )}
+            </div>
           </div>
         </div>
         <div className="w-7/12 flex flex-col">
           <div className="flex flex-col">
-            <div className="flex flex-row">
+            <div className="flex flex-row items-center gap-2">
               <span className="text-zinc-400 text-3xl font-light">
                 {props.coinData.localization[props.language]} Price
               </span>
@@ -114,108 +182,169 @@ export default function CoinPageTitleSection(props) {
                 toggleState={priceChangeSelect}
               />
             </div>
-            <div className="flex flex-row gap-1">
+            <div className="flex flex-row items-center gap-1">
               <span className="text-white text-4xl font-semibold">
-                ${props.coinData.market_data.current_price[props.currency]}
+                $
+                {props.coinData.market_data.current_price[props.currency]
+                  .toString()
+                  .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}
               </span>
               <span className="text-white text-4xl font-light">
                 {props.currency.toUpperCase()}
               </span>
-              <span className="text-xl text-white font-semibold bg-green-600 px-2 py-1 rounded-md">
-                {props.coinData.market_data[
-                  "price_change_percentage_" + priceChange + "_in_currency"
-                ][props.currency].toFixed(2)}
-                %
-              </span>
+              <div>
+                <span>
+                  {props.coinData.market_data[
+                    "price_change_percentage_" + priceChange + "_in_currency"
+                  ][props.currency] > 0 ? (
+                    <span className="text-xl text-white font-semibold bg-green-600 px-2 py-1 rounded-md">
+                      +
+                      {props.coinData.market_data[
+                        "price_change_percentage_" +
+                          priceChange +
+                          "_in_currency"
+                      ][props.currency].toFixed(2)}
+                      %
+                    </span>
+                  ) : (
+                    <span className="text-xl text-white font-semibold bg-red-500 px-2 py-1 rounded-md">
+                      {props.coinData.market_data[
+                        "price_change_percentage_" +
+                          priceChange +
+                          "_in_currency"
+                      ][props.currency] != null
+                        ? props.coinData.market_data[
+                            "price_change_percentage_" +
+                              priceChange +
+                              "_in_currency"
+                          ][props.currency].toFixed(2)
+                        : "0"}
+                      %
+                    </span>
+                  )}
+                </span>
+              </div>
             </div>
-            <div className="flex flex-row gap-4">
+            <div className="flex flex-row gap-4  border-b border-neutral-800">
               <div className="flex flex-row gap-1">
                 <span className="text-zinc-400 font-semibold">Low:</span>
                 <span className="text-white font-semibold">
                   $
-                  {coinLow
-                    .toFixed(2)
-                    .toString()
-                    .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}
+                  {coinLow >= 1
+                    ? coinLow
+                        .toFixed(2)
+                        .toString()
+                        .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
+                    : coinLow.toFixed(7)}
                 </span>
               </div>
               <div className="flex flex-row gap-1">
                 <span className="text-zinc-400 font-semibold">Start:</span>
                 <span className="text-white font-semibold">
                   $
-                  {coinInitial
-                    .toFixed(2)
-                    .toString()
-                    .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}
+                  {coinInitial >= 1
+                    ? coinInitial
+                        .toFixed(2)
+                        .toString()
+                        .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
+                    : coinInitial.toFixed(7)}
                 </span>
               </div>
               <div className="flex flex-row gap-1">
                 <span className="text-zinc-400 font-semibold">High:</span>
                 <span className="text-white font-semibold">
                   $
-                  {coinHigh
-                    .toFixed(2)
-                    .toString()
-                    .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}
+                  {coinHigh >= 1
+                    ? coinHigh
+                        .toFixed(2)
+                        .toString()
+                        .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
+                    : coinHigh.toFixed(7)}
                 </span>
               </div>
             </div>
           </div>
-          <div className="flex flex-row">
-            <div className="grid grid-cols-2">
-              <span className="text-zinc-400 font-semibold">Total Supply</span>
-              <span className="text-white">
-                {props.coinData.market_data.total_supply
-                  .toString()
-                  .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}
-                {props.coinData.symbol.toUpperCase()}
-              </span>
-              <span className="text-zinc-400 font-semibold">
-                Circulating Supply
-              </span>
-              <span className="text-white">
-                {props.coinData.market_data.circulating_supply
-                  .toString()
-                  .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}
-                {props.coinData.symbol.toUpperCase()}
-              </span>
-              <span className="text-zinc-400 font-semibold">Max Supply</span>
-              <span className="text-white">
-                {props.coinData.market_data.max_supply
-                  .toString()
-                  .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}
-                {props.coinData.symbol.toUpperCase()}
-              </span>
+          <div className="flex flex-row gap-4">
+            <div className="w-1/2 flex flex-col">
+              <div className="flex flex-row justify-between border-b border-neutral-800">
+                <span className="text-zinc-400 font-semibold">Market Cap</span>
+                <span className="text-white">
+                  $
+                  {props.coinData.market_data.market_cap[props.currency]
+                    .toString()
+                    .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}{" "}
+                  {props.currency.toUpperCase()}
+                </span>
+              </div>
+              <div className="flex flex-row justify-between border-b border-neutral-800">
+                <span className="text-zinc-400 font-semibold">
+                  Volume (24h)
+                </span>
+                <span className="text-white">
+                  $
+                  {props.coinData.market_data.total_volume[props.currency]
+                    .toString()
+                    .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}{" "}
+                  {props.currency.toUpperCase()}
+                </span>
+              </div>
+              <div className="flex flex-row justify-between border-b border-neutral-800">
+                <span className="text-zinc-400 font-semibold">
+                  Fully Diluted Market Cap
+                </span>
+                <span className="text-white">
+                  {props.coinData.market_data.fully_diluted_valuation[
+                    props.currency
+                  ] != null
+                    ? "$" +
+                      props.coinData.market_data.fully_diluted_valuation[
+                        props.currency
+                      ]
+                        .toString()
+                        .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
+                    : "∞"}{" "}
+                  {props.currency.toUpperCase()}
+                </span>
+              </div>
             </div>
-            <div className="grid grid-cols-2">
-              <span className="text-zinc-400 font-semibold">Volume</span>
-              <span className="text-white">
-                $
-                {props.coinData.market_data.total_volume[props.currency]
-                  .toString()
-                  .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}
-                {props.currency.toUpperCase()}
-              </span>
-              <span className="text-zinc-400 font-semibold">Market Cap</span>
-              <span className="text-white">
-                $
-                {props.coinData.market_data.market_cap[props.currency]
-                  .toString()
-                  .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}
-                {props.currency.toUpperCase()}
-              </span>
-              <span className="text-zinc-400 font-semibold">
-                Fully Diluted Valuation
-              </span>
-              <span className="text-white">
-                $
-                {props.coinData.market_data.fully_diluted_valuation[
-                  props.currency
-                ]
-                  .toString()
-                  .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}
-                {props.currency.toUpperCase()}
-              </span>
+            <div className="w-1/2 flex flex-col">
+              <div className="flex flex-row justify-between border-b border-neutral-800">
+                <span className="text-zinc-400 font-semibold">
+                  Circulating Supply
+                </span>
+                <span className="text-white">
+                  {props.coinData.market_data.circulating_supply != null
+                    ? props.coinData.market_data.circulating_supply
+                        .toString()
+                        .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
+                    : "0"}{" "}
+                  {props.coinData.symbol.toUpperCase()}
+                </span>
+              </div>
+              <div className="flex flex-row justify-between border-b border-neutral-800">
+                <span className="text-zinc-400 font-semibold">
+                  Total Supply
+                </span>
+                <span className="text-white">
+                  {props.coinData.market_data.total_supply != null
+                    ? props.coinData.market_data.total_supply
+                        .toString()
+                        .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
+                    : "∞"}{" "}
+                  {props.coinData.symbol.toUpperCase()}
+                </span>
+              </div>
+              <div className="flex flex-row justify-between border-b border-neutral-800">
+                <span className="text-zinc-400 font-semibold">Max Supply</span>
+                <span className="text-white">
+                  {props.coinData.market_data.max_supply != null
+                    ? props.coinData.market_data.max_supply
+                        .toString()
+                        .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
+                    : "∞"}{" "}
+                  {props.coinData.symbol.toUpperCase()}
+                </span>
+              </div>
             </div>
           </div>
         </div>
