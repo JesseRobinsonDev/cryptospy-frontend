@@ -5,6 +5,7 @@ import CoinPageTitleSection from "../../../../components/coinpage/CoinPageTitleS
 
 export default function CoinHistoryPage(props) {
   const [coinOHLC, setCoinOHLC] = useState([]);
+  const [timeframe, setTimeframe] = useState("1y");
 
   useEffect(() => {
     setCoinOHLC([...props.ohlc]);
@@ -41,7 +42,7 @@ export default function CoinHistoryPage(props) {
     var date = a.getDate();
     var hour = a.getHours();
     var min = a.getMinutes() < 10 ? "0" + a.getMinutes() : a.getMinutes();
-    var time = hour + ":" + min + " GMT, " + month + " " + date + ", " + year;
+    var time = hour + ":" + min + ", " + month + " " + date + ", " + year;
     return time;
   }
 
@@ -51,7 +52,7 @@ export default function CoinHistoryPage(props) {
       title={`${props.coinData.name} History - CryptoSpy`}
       description={`Get the latest ${props.coinData.name} information, current price, market cap, volume, supply and data`}
     >
-      <div className="w-full flex flex-col">
+      <div className="w-full flex flex-col p-2">
         <CoinPageTitleSection
           coinData={props.coinData}
           language={props.language}
@@ -59,17 +60,122 @@ export default function CoinHistoryPage(props) {
           tab="History"
         />
         <div className="w-full">
-          <div className="flex flex-row gap-8">
-            <button onClick={() => getCoinOHLC(1)}>CLICK</button>
-            <button onClick={() => getCoinOHLC(7)}>CLICK</button>
-            <button onClick={() => getCoinOHLC(14)}>CLICK</button>
-            <button onClick={() => getCoinOHLC(30)}>CLICK</button>
-            <button onClick={() => getCoinOHLC(90)}>CLICK</button>
-            <button onClick={() => getCoinOHLC(180)}>CLICK</button>
-            <button onClick={() => getCoinOHLC(365)}>CLICK</button>
+          <div className="flex flex-row gap-4 p-2">
+            <button
+              onClick={() => {
+                getCoinOHLC(1);
+                setTimeframe("24h");
+              }}
+            >
+              {timeframe == "24h" ? (
+                <span className="text-white text-lg font-semibold bg-blue-700 py-2 px-4 duration-300 rounded-lg">
+                  24h
+                </span>
+              ) : (
+                <span className="text-white text-lg font-semibold hover:bg-blue-700 hover:bg-opacity-50 py-2 px-4 duration-300 rounded-lg">
+                  24h
+                </span>
+              )}
+            </button>
+            <button
+              onClick={() => {
+                getCoinOHLC(7);
+                setTimeframe("7d");
+              }}
+            >
+              {timeframe == "7d" ? (
+                <span className="text-white text-lg font-semibold bg-blue-700 py-2 px-4 duration-300 rounded-lg">
+                  7d
+                </span>
+              ) : (
+                <span className="text-white text-lg font-semibold hover:bg-blue-700 hover:bg-opacity-50 py-2 px-4 duration-300 rounded-lg">
+                  7d
+                </span>
+              )}
+            </button>
+            <button
+              onClick={() => {
+                getCoinOHLC(14);
+                setTimeframe("14d");
+              }}
+            >
+              {timeframe == "14d" ? (
+                <span className="text-white text-lg font-semibold bg-blue-700 py-2 px-4 duration-300 rounded-lg">
+                  14d
+                </span>
+              ) : (
+                <span className="text-white text-lg font-semibold hover:bg-blue-700 hover:bg-opacity-50 py-2 px-4 duration-300 rounded-lg">
+                  14d
+                </span>
+              )}
+            </button>
+            <button
+              onClick={() => {
+                getCoinOHLC(30);
+                setTimeframe("1m");
+              }}
+            >
+              {timeframe == "1m" ? (
+                <span className="text-white text-lg font-semibold bg-blue-700 py-2 px-4 duration-300 rounded-lg">
+                  1m
+                </span>
+              ) : (
+                <span className="text-white text-lg font-semibold hover:bg-blue-700 hover:bg-opacity-50 py-2 px-4 duration-300 rounded-lg">
+                  1m
+                </span>
+              )}
+            </button>
+            <button
+              onClick={() => {
+                getCoinOHLC(90);
+                setTimeframe("3m");
+              }}
+            >
+              {timeframe == "3m" ? (
+                <span className="text-white text-lg font-semibold bg-blue-700 py-2 px-4 duration-300 rounded-lg">
+                  3m
+                </span>
+              ) : (
+                <span className="text-white text-lg font-semibold hover:bg-blue-700 hover:bg-opacity-50 py-2 px-4 duration-300 rounded-lg">
+                  3m
+                </span>
+              )}
+            </button>
+            <button
+              onClick={() => {
+                getCoinOHLC(180);
+                setTimeframe("6m");
+              }}
+            >
+              {timeframe == "6m" ? (
+                <span className="text-white text-lg font-semibold bg-blue-700 py-2 px-4 duration-300 rounded-lg">
+                  6m
+                </span>
+              ) : (
+                <span className="text-white text-lg font-semibold hover:bg-blue-700 hover:bg-opacity-50 py-2 px-4 duration-300 rounded-lg">
+                  6m
+                </span>
+              )}
+            </button>
+            <button
+              onClick={() => {
+                getCoinOHLC(365);
+                setTimeframe("1y");
+              }}
+            >
+              {timeframe == "1y" ? (
+                <span className="text-white text-lg font-semibold bg-blue-700 py-2 px-4 duration-300 rounded-lg">
+                  1y
+                </span>
+              ) : (
+                <span className="text-white text-lg font-semibold hover:bg-blue-700 hover:bg-opacity-50 py-2 px-4 duration-300 rounded-lg">
+                  1y
+                </span>
+              )}
+            </button>
           </div>
           <ul className="flex flex-col text-white">
-            <li className="grid grid-cols-5">
+            <li className="grid grid-cols-5 p-2 border-y border-neutral-800">
               <span>Date</span>
               <span>Open</span>
               <span>High</span>
@@ -77,12 +183,35 @@ export default function CoinHistoryPage(props) {
               <span>Close</span>
             </li>
             {coinOHLC.map((ohlc) => (
-              <li key={ohlc[0]} className="grid grid-cols-5">
+              <li
+                key={ohlc[0]}
+                className="grid grid-cols-5 border-b border-neutral-800 p-2"
+              >
                 <span>{timeConverter(ohlc[0])}</span>
-                <span>{ohlc[1]}</span>
-                <span>{ohlc[2]}</span>
-                <span>{ohlc[3]}</span>
-                <span>{ohlc[4]}</span>
+                <span>
+                  $
+                  {ohlc[1]
+                    .toString()
+                    .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}
+                </span>
+                <span>
+                  $
+                  {ohlc[2]
+                    .toString()
+                    .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}
+                </span>
+                <span>
+                  $
+                  {ohlc[3]
+                    .toString()
+                    .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}
+                </span>
+                <span>
+                  $
+                  {ohlc[4]
+                    .toString()
+                    .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}
+                </span>
               </li>
             ))}
           </ul>

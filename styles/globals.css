@@ -18,3 +18,12 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.unreset a {
+  color: #326ded;
+  transition: color 300ms;
+}
+
+.unreset a:hover {
+  color: #5f8ff5;
+}
