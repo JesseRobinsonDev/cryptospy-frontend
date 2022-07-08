@@ -145,8 +145,16 @@ export default function Home(props) {
   }
 
   return (
-    <Layout title="Cryptospy">
-      <div className="w-full p-4 px-4">
+    <Layout title="CryptoSpy">
+      <div className="w-full p-4 px-4 flex flex-col gap-1">
+        <div className="flex flex-col gap-1 p-1">
+          <span className="text-6xl text-white font-light">
+            Welcome to CryptoSpy.
+          </span>
+          <p className="text-xl text-neutral-500 font-semibold">
+            Your gateway to cyrptocurrency statistics, prices, and information.
+          </p>
+        </div>
         <ul className="w-full px-4 grid grid-cols-2 gap-4">
           <li className="w-full h-auto p-2 bg-neutral-800 rounded-lg">
             <span className="text-gray-100 text-lg font-semibold">
@@ -154,18 +162,26 @@ export default function Home(props) {
             </span>
             <ul>
               {props.trendingCoins.coins.slice(0, 5).map((coin) => (
-                <li key={coin.item.id} className="w-full flex flex-row gap-4">
-                  <span className="width-1/12 text-neutral-500 font-bold">
-                    {props.trendingCoins.coins.indexOf(coin) + 1}
-                  </span>
-                  <div className="w-11/12 flex flex-row justify-between">
-                    <div>
-                      <span className="text-gray-200">{coin.item.name}</span>
-                    </div>
-                    <span className="text-gray-200">
-                      #{coin.item.market_cap_rank}
-                    </span>
-                  </div>
+                <li key={coin.item.id}>
+                  <Link
+                    href={`${process.env.NEXT_PUBLIC_SITEURL}/coin/${coin.item.id}`}
+                  >
+                    <a className="w-full flex flex-row gap-4 group">
+                      <span className="width-1/12 text-neutral-500 font-bold">
+                        {props.trendingCoins.coins.indexOf(coin) + 1}
+                      </span>
+                      <div className="w-11/12 flex flex-row justify-between">
+                        <div>
+                          <span className="text-gray-200 group-hover:text-green-500 duration-300">
+                            {coin.item.name}
+                          </span>
+                        </div>
+                        <span className="text-gray-200">
+                          #{coin.item.market_cap_rank}
+                        </span>
+                      </div>
+                    </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -183,34 +199,42 @@ export default function Home(props) {
             </div>
             <ul>
               {props.exchanges.map((exchange) => (
-                <li key={exchange.id} className="w-full flex flex-row gap-4">
-                  <span className="width-1/12 text-neutral-500 font-bold">
-                    {props.exchanges.indexOf(exchange) + 1}
-                  </span>
-                  <div className="w-11/12 flex flex-row justify-between">
-                    <span className="text-gray-200">{exchange.name}</span>
-                    <span className="text-gray-200">
-                      $
-                      {exchange.trade_volume_24h_btc
-                        .toFixed(2)
-                        .toString()
-                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                    </span>
-                  </div>
+                <li key={exchange.id}>
+                  <Link
+                    href={`${process.env.NEXT_PUBLIC_SITEURL}/exchange/${exchange.id}`}
+                  >
+                    <a className="w-full flex flex-row gap-4 group">
+                      <span className="width-1/12 text-neutral-500 font-bold">
+                        {props.exchanges.indexOf(exchange) + 1}
+                      </span>
+                      <div className="w-11/12 flex flex-row justify-between">
+                        <span className="text-gray-200 group-hover:text-green-500 duration-300">
+                          {exchange.name}
+                        </span>
+                        <span className="text-gray-200">
+                          $
+                          {exchange.trade_volume_24h_btc
+                            .toFixed(2)
+                            .toString()
+                            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                        </span>
+                      </div>
+                    </a>
+                  </Link>
                 </li>
               ))}
             </ul>
           </li>
         </ul>
-        <div className="">
-          <div className="flex">
+        <div>
+          <div className="flex flex-row gap-2">
             <PageNavigationBar
               url={`${process.env.NEXT_PUBLIC_SITEURL}/?perpage=${props.perpage}&currency=${props.currency}&category=${props.category}`}
               page={props.page}
             />
             <DropdownMenuInput
               dropdownButton={{
-                text: `V`,
+                text: `${props.perpage} V`,
                 onClick: () => setPerPageDropdown(!perPageDropdown),
               }}
               dropdownButtons={[
@@ -245,7 +269,7 @@ export default function Home(props) {
               ]}
               toggleState={perPageDropdown}
             />
-            <ul className="flex flex-row gap-4">
+            <ul className="flex flex-row items-center gap-1">
               {props.categories.slice(0, 4).map((category) => (
                 <li
                   key={category.id}
@@ -258,7 +282,13 @@ export default function Home(props) {
                   </Link>
                 </li>
               ))}
-              <li>More</li>
+              <li>
+                <Link href={`${process.env.NEXT_PUBLIC_SITEURL}/categories`}>
+                  <a className="text-xl text-blue-500 hover:text-blue-400 duration-300">
+                    More {">"}
+                  </a>
+                </Link>
+              </li>
             </ul>
           </div>
           <header className="w-full h-12 sticky top-0 grid grid-cols-10 items-center justify-between text-center gap-2 overflow-hidden bg-neutral-900 border-b border-neutral-800">
@@ -270,13 +300,13 @@ export default function Home(props) {
             </button>
             <button
               onClick={() => sortCoinsData("name")}
-              className="col-span-2 flex justify-start text-lg text-gray-200 hover:text-green-500 duration-300"
+              className="col-span-2 flex justify-start text-gray-200 hover:text-green-500 duration-300 font-semibold text-lg"
             >
               Coin
             </button>
             <button
               onClick={() => sortCoinsData("price")}
-              className="flex justify-start text-gray-200 hover:text-green-500 duration-300"
+              className="flex justify-start text-gray-200 hover:text-green-500 duration-30"
             >
               Price
             </button>
@@ -310,6 +340,9 @@ export default function Home(props) {
             >
               Circulating Supply
             </button>
+            <span className="w-full flex justify-start text-gray-200">
+              Price Graph (7d)
+            </span>
           </header>
           <ul>
             {coinsData.map((coin) => (
@@ -325,6 +358,7 @@ export default function Home(props) {
                 price={coin.current_price}
                 priceChange7d={coin.price_change_percentage_7d_in_currency}
                 priceChange24h={coin.price_change_percentage_24h_in_currency}
+                priceHistory={coin.sparkline_in_7d.price}
                 currency={props.currency}
                 symbol={coin.symbol}
               />

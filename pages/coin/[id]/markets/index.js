@@ -143,51 +143,53 @@ export default function CoinMarketsPage(props) {
           currency={props.currency}
           tab="Markets"
         />
-        <PageNavigationBar
-          url={`${process.env.NEXT_PUBLIC_SITEURL}/coin/${props.coinData.id}/markets?currency=${props.currency}`}
-          page={props.page}
-        />
+        <div className="border-b border-neutral-800 p-2">
+          <PageNavigationBar
+            url={`${process.env.NEXT_PUBLIC_SITEURL}/coin/${props.coinData.id}/markets?currency=${props.currency}`}
+            page={props.page}
+          />
+        </div>
         <div className="w-full">
-          <header className="grid grid-cols-7 p-1 border-b border-neutral-800">
+          <header className="h-12 sticky top-0 items-center bg-neutral-900 grid grid-cols-7 p-1 border-b border-neutral-800">
             <button
               onClick={() => sortMarketData("number")}
-              className="text-white font-semibold text-lg"
+              className="flex justify-center text-gray-200 hover:text-green-500 duration-300"
             >
               #
             </button>
             <button
               onClick={() => sortMarketData("exchange")}
-              className="text-white font-semibold text-lg flex justify-start"
+              className="flex justify-start text-gray-200 hover:text-green-500 duration-300 text-lg font-semibold"
             >
               Exchange
             </button>
             <button
               onClick={() => sortMarketData("pair")}
-              className="text-white font-semibold text-lg flex justify-start"
+              className="flex justify-start text-gray-200 hover:text-green-500 duration-300"
             >
               Pair
             </button>
             <button
               onClick={() => sortMarketData("usdprice")}
-              className="text-white font-semibold text-lg flex justify-start"
+              className="flex justify-start text-gray-200 hover:text-green-500 duration-300"
             >
               USD Price
             </button>
             <button
               onClick={() => sortMarketData("usdvolume")}
-              className="text-white font-semibold text-lg flex justify-start"
+              className="flex justify-start text-gray-200 hover:text-green-500 duration-300"
             >
               USD Volume
             </button>
             <button
               onClick={() => sortMarketData("lastprice")}
-              className="text-white font-semibold text-lg flex justify-start"
+              className="flex justify-start text-gray-200 hover:text-green-500 duration-300"
             >
               Target Price
             </button>
             <button
               onClick={() => sortMarketData("lastvolume")}
-              className="text-white font-semibold text-lg flex justify-start"
+              className="flex justify-start text-gray-200 hover:text-green-500 duration-300"
             >
               Target Volume
             </button>
@@ -196,9 +198,11 @@ export default function CoinMarketsPage(props) {
             {marketData.map((ticker) => (
               <li
                 key={`${ticker.market.identifier}-${ticker.base}/${ticker.target}`}
-                className="grid grid-cols-7 p-1 text-white border-b border-neutral-800 items-center"
+                className="grid grid-cols-7 h-10 text-white border-b border-neutral-800 items-center"
               >
-                <span className="flex justify-center">{ticker.num}</span>
+                <span className="flex justify-center text-neutral-500 font-semibold text-lg">
+                  {ticker.num}
+                </span>
                 <Link
                   href={`${process.env.NEXT_PUBLIC_SITEURL}/exchange/${ticker.market.identifier}`}
                 >
