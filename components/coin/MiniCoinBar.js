@@ -1,6 +1,8 @@
 import Link from "next/link";
+import ScatterLineGraph from "../chart/ScatterLineGraph";
 
 export default function MiniCoinBar(props) {
+  console.log(props);
   return (
     <li className="w-full h-20 grid grid-cols-10 items-center justify-between text-center gap-2 overflow-hidden border-b border-neutral-800">
       <div className="text-lg text-neutral-500 font-semibold">{props.rank}</div>
@@ -75,7 +77,6 @@ export default function MiniCoinBar(props) {
               .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
           : "0"}
       </span>
-      {/*
       <ScatterLineGraph
         color={props.priceChange7d >= 0 ? "green" : "red"}
         y={props.priceHistory}
@@ -84,8 +85,7 @@ export default function MiniCoinBar(props) {
           .map((x, i) => i)}
         width={140}
         height={80}
-        />
-        */}
+      />
     </li>
   );
 }

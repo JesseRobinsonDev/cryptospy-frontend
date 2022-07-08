@@ -310,6 +310,9 @@ export default function Home(props) {
             >
               Circulating Supply
             </button>
+            <span className="w-full flex justify-start text-gray-200">
+              Price Graph (7d)
+            </span>
           </header>
           <ul>
             {coinsData.map((coin) => (
@@ -325,6 +328,7 @@ export default function Home(props) {
                 price={coin.current_price}
                 priceChange7d={coin.price_change_percentage_7d_in_currency}
                 priceChange24h={coin.price_change_percentage_24h_in_currency}
+                priceHistory={coin.sparkline_in_7d.price}
                 currency={props.currency}
                 symbol={coin.symbol}
               />
