@@ -46,7 +46,6 @@ export default function CoinHistoryPage(props) {
     return time;
   }
 
-  console.log(props);
   return (
     <Layout
       title={`${props.coinData.name} History - CryptoSpy`}

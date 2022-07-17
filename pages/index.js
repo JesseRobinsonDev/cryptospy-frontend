@@ -8,7 +8,6 @@ import PageNavigationBar from "../components/navigation/PageNavigationBar";
 import DropdownMenuInput from "../components/input/DropdownMenuInput";
 
 export default function Home(props) {
-  console.log(props);
   const [coinsData, setCoinsData] = useState([]);
   const [coinSort, setCoinSort] = useState("coinasc");
   const [perPageDropdown, setPerPageDropdown] = useState(false);

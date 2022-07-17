@@ -37,7 +37,6 @@ export default function CoinCategoriesPage(props) {
         break;
       case "marketcap":
         if (categorySort == "marketcapasc") {
-          console.log("marketcapasc");
           setCategoryData(() => [
             ...data.sort((a, b) => a.market_cap - b.market_cap),
           ]);
@@ -102,8 +101,6 @@ export default function CoinCategoriesPage(props) {
         break;
     }
   }
-
-  console.log(props);
 
   return (
     <Layout title={`Categories - CryptoSpy`}>

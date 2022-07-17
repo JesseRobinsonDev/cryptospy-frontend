@@ -51,7 +51,6 @@ export default function CoinPage(props) {
       });
   }
 
-  console.log(props);
   return (
     <Layout
       title={`${props.coinData.name} - CryptoSpy`}
