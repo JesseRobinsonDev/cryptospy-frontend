@@ -1,20 +1,68 @@
 import Link from "next/link";
 import ScatterLineGraph from "../chart/ScatterLineGraph";
+import axios from "axios";
+import { useState, useEffect, useContext } from "react";
+import { UserContext } from "../../pages/_app";
 
 export default function MiniCoinBar(props) {
-  console.log(props);
+  const [tracked, setTracked] = useState(false);
+  const { userID } = useContext(UserContext);
+
+  function trackCoinHandler() {
+    if (userID == null) {
+      return;
+    }
+    axios
+      .put(
+        `${process.env.NEXT_PUBLIC_APIURL}/user/${userID}/${props.id}/${
+          tracked ? "untrack" : "track"
+        }`
+      )
+      .then((response) => {
+        setTracked(!tracked);
+      });
+  }
+
+  useEffect(() => {
+    setTracked(props.tracked);
+  }, [props]);
+
   return (
     <li className="w-full h-20 grid grid-cols-10 items-center justify-between text-center gap-2 overflow-hidden border-b border-neutral-800">
       <div className="text-lg text-neutral-500 font-semibold">{props.rank}</div>
-      <Link href={`${process.env.NEXT_PUBLIC_SITEURL}/coin/${props.id}`}>
-        <a className="flex flex-row items-center col-span-2 gap-2">
-          <img className="w-9 h-9" src={props.image} alt={props.name} />
-          <span className="text-xl text-white font-light">{props.name}</span>
-          <span className="text-sm text-gray-400 font-bold px-3 py-1 bg-zinc-700 rounded-lg tracking-wide mt-1">
-            {props.symbol.toUpperCase()}
-          </span>
-        </a>
-      </Link>
+      <div className="flex flex-row col-span-2 gap-2 items-center">
+        <Link href={`${process.env.NEXT_PUBLIC_SITEURL}/coin/${props.id}`}>
+          <a className="flex flex-row items-center gap-2">
+            <img className="w-9 h-9" src={props.image} alt={props.name} />
+            <span className="text-xl text-white font-light">{props.name}</span>
+            <span className="text-sm text-gray-400 font-bold px-3 py-1 bg-zinc-700 rounded-lg tracking-wide mt-1">
+              {props.symbol.toUpperCase()}
+            </span>
+          </a>
+        </Link>
+        <button className="relative flex items-center justify-center group">
+          {tracked ? (
+            <img
+              src="/svgs/Yellow Star.svg"
+              className="w-8 h-8"
+              onClick={trackCoinHandler}
+            />
+          ) : (
+            <img
+              src="/svgs/White Star.svg"
+              className="w-8 h-8"
+              onClick={trackCoinHandler}
+            />
+          )}
+          <div className="absolute invisible w-44 px-1 py-0.5 bottom-6 rounded-md group-hover:visible bg-neutral-800 text-white">
+            {tracked ? (
+              <span className="text-sm">Remove from Watchlist</span>
+            ) : (
+              <span className="text-sm">Add to Watchlist</span>
+            )}
+          </div>
+        </button>
+      </div>
       <div className="flex flex-row justify-start gap-1">
         <span className="text-white">
           $
@@ -75,7 +123,8 @@ export default function MiniCoinBar(props) {
           ? Math.floor(props.circulatingSupply)
               .toString()
               .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-          : "0"}
+          : "0"}{" "}
+        {props.symbol.toUpperCase()}
       </span>
       <ScatterLineGraph
         color={props.priceChange7d >= 0 ? "green" : "red"}
