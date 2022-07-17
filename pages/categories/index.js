@@ -1,6 +1,7 @@
 import Layout from "../../components/layout/Layout";
 import axios from "axios";
 import { useState, useEffect } from "react";
+import Link from "next/link";
 
 export default function CoinCategoriesPage(props) {
   const [categoryData, setCategoryData] = useState([]);
@@ -37,7 +38,6 @@ export default function CoinCategoriesPage(props) {
         break;
       case "marketcap":
         if (categorySort == "marketcapasc") {
-          console.log("marketcapasc");
           setCategoryData(() => [
             ...data.sort((a, b) => a.market_cap - b.market_cap),
           ]);
@@ -103,8 +103,6 @@ export default function CoinCategoriesPage(props) {
     }
   }
 
-  console.log(props);
-
   return (
     <Layout title={`Categories - CryptoSpy`}>
       <div className="w-full flex flex-col p-4 px-4">
@@ -151,9 +149,13 @@ export default function CoinCategoriesPage(props) {
                 <span className="flex justify-center text-neutral-500 font-semibold text-lg">
                   {category.num}
                 </span>
-                <span className="text-white text-xl font-light">
-                  {category.name}
-                </span>
+                <Link
+                  href={`${process.env.NEXT_PUBLIC_SITEURL}/?category=${category.id}`}
+                >
+                  <a className="text-white text-xl font-light">
+                    {category.name}
+                  </a>
+                </Link>
                 <span className="text-white">
                   $
                   {category.market_cap

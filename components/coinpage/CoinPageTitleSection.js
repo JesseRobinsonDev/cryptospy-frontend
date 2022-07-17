@@ -1,8 +1,9 @@
 import CoinPageNavigationBar from "./CoinPageNavigationBar";
 import DropdownMenuInput from "../input/DropdownMenuInput";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Link from "next/link";
 import axios from "axios";
+import { UserContext } from "../../pages/_app";
 
 export default function CoinPageTitleSection(props) {
   const [priceChangeSelect, setPriceChangeSelect] = useState(false);
@@ -10,6 +11,35 @@ export default function CoinPageTitleSection(props) {
   const [coinLow, setCoinLow] = useState(0);
   const [coinHigh, setCoinHigh] = useState(0);
   const [coinInitial, setCoinInitial] = useState(0);
+  const [tracked, setTracked] = useState(false);
+  const { userID } = useContext(UserContext);
+
+  function trackCoinHandler() {
+    if (userID == null) {
+      return;
+    }
+    axios
+      .put(
+        `${process.env.NEXT_PUBLIC_APIURL}/user/${userID}/${
+          props.coinData.id
+        }/${tracked ? "untrack" : "track"}`
+      )
+      .then(() => {
+        setTracked(!tracked);
+      });
+  }
+
+  useEffect(() => {
+    if (userID == null) {
+      setTracked(false);
+      return;
+    }
+    axios
+      .get(`${process.env.NEXT_PUBLIC_APIURL}/user/get/${userID}`)
+      .then((response) => {
+        setTracked(response.data.tracked_coins.includes(props.coinData.id));
+      });
+  }, [userID]);
 
   useEffect(() => {
     getCoinHistoryData(7);
@@ -73,6 +103,28 @@ export default function CoinPageTitleSection(props) {
             <span className="text-gray-400 bg-zinc-700 py-1 px-3 text-sm rounded-md font-bold">
               {props.coinData.symbol.toUpperCase()}
             </span>
+            <button className="flex items-center justify-center relative group">
+              {tracked ? (
+                <img
+                  src="/svgs/Yellow Star.svg"
+                  className="w-8 h-8"
+                  onClick={trackCoinHandler}
+                />
+              ) : (
+                <img
+                  src="/svgs/White Star.svg"
+                  className="w-8 h-8"
+                  onClick={trackCoinHandler}
+                />
+              )}
+              <div className="absolute invisible w-44 px-1 py-0.5 bottom-6 rounded-md group-hover:visible bg-neutral-800 text-white">
+                {tracked ? (
+                  <span className="text-sm">Remove from Watchlist</span>
+                ) : (
+                  <span className="text-sm">Add to Watchlist</span>
+                )}
+              </div>
+            </button>
           </div>
           <div>
             <span className="text-gray-400 bg-zinc-700 py-1 px-3 text-sm rounded-md font-bold">

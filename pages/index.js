@@ -1,18 +1,32 @@
 import axios from "axios";
 import Layout from "../components/layout/Layout";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/router";
 import MiniCoinBar from "../components/coin/MiniCoinBar";
 import PageNavigationBar from "../components/navigation/PageNavigationBar";
 import DropdownMenuInput from "../components/input/DropdownMenuInput";
+import { UserContext } from "./_app";
 
 export default function Home(props) {
-  console.log(props);
   const [coinsData, setCoinsData] = useState([]);
   const [coinSort, setCoinSort] = useState("coinasc");
   const [perPageDropdown, setPerPageDropdown] = useState(false);
+  const [trackedCoins, setTrackedCoins] = useState([]);
+  const { userID } = useContext(UserContext);
   const router = useRouter();
+
+  useEffect(() => {
+    if (userID == null) {
+      setTrackedCoins([]);
+      return;
+    }
+    axios
+      .get(`${process.env.NEXT_PUBLIC_APIURL}/user/get/${userID}`)
+      .then((response) => {
+        setTrackedCoins(response.data.tracked_coins);
+      });
+  }, [userID]);
 
   useEffect(() => {
     setCoinsData(() => [...props.coinsData]);
@@ -361,6 +375,7 @@ export default function Home(props) {
                 priceHistory={coin.sparkline_in_7d.price}
                 currency={props.currency}
                 symbol={coin.symbol}
+                tracked={trackedCoins.includes(coin.id)}
               />
             ))}
           </ul>
@@ -1007,7 +1022,7 @@ export const getServerSideProps = async (context) => {
   const perpage =
     context.query.perpage != undefined && context.query.perpage > 0
       ? context.query.perpage
-      : 50;
+      : 25;
   const currency =
     context.query.currency != undefined &&
     acceptCurrencies.includes(context.query.currency)
