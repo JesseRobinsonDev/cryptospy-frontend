@@ -1,6 +1,9 @@
+import { useRef, useState } from "react";
 import axios from "axios";
 
 export default function LoginModal(props) {
+  const [userNotFound, setUserNotFound] = useState(false);
+  const [incorrectPassword, setIncorrectPassword] = useState(false);
   const usernameRef = useRef();
   const passwordRef = useRef();
 
@@ -13,13 +16,27 @@ export default function LoginModal(props) {
         username: username,
         pass: password,
       })
+      .catch((error) => {
+        if (error.response.status == 404) {
+          setUserNotFound(true);
+        }
+        if (error.response.status == 401) {
+          setIncorrectPassword(true);
+        }
+      })
       .then((response) => {
+        if (response !== undefined) {
           localStorage.setItem("userID", response.data.user_id);
           props.setUserID(response.data.user_id);
           props.setLoginModal(false);
+        }
       });
   }
 
+  function onInputChange() {
+    setUserNotFound(false);
+    setIncorrectPassword(false);
+  }
 
   return (
     <div className="fixed z-50 inset-0 bg-black bg-opacity-50 flex justify-center items-center">
@@ -51,20 +68,36 @@ export default function LoginModal(props) {
           <div className="flex flex-col">
             <span className="text-neutral-50 font-semibold">Username</span>
             <input
+              onChange={onInputChange}
               type="text"
               ref={usernameRef}
               className="text-white bg-neutral-900 py-3 px-2 rounded-md border-neutral-700 border-[1px] hover:border-blue-600 duration-300 outline-0 focus:border-blue-600"
               placeholder="Enter your username..."
             />
+            {userNotFound && (
+              <div className="flex flex-row gap-1 items-center">
+                <img src="/svgs/Red Alert.svg" className="w-6 h-6" />
+                <span className="text-red-500">
+                  Account with username not found!
+                </span>
+              </div>
+            )}
           </div>
           <div className="flex flex-col">
             <span className="text-neutral-50 font-semibold">Password</span>
             <input
+              onChange={onInputChange}
               type="password"
               ref={passwordRef}
               className="text-white bg-neutral-900 py-3 px-2 rounded-md border-neutral-700 border-[1px] hover:border-blue-600 duration-300 outline-0 focus:border-blue-600"
               placeholder="Enter your password..."
             />
+            {incorrectPassword && (
+              <div className="flex flex-row gap-1 items-center">
+                <img src="/svgs/Red Alert.svg" className="w-6 h-6" />
+                <span className="text-red-500">Password is incorrect!</span>
+              </div>
+            )}
           </div>
           <button
             type="submit"
