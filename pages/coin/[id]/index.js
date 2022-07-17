@@ -1,13 +1,11 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Layout from "../../../components/layout/Layout";
-import Link from "next/link";
 import parse from "html-react-parser";
 import CoinPageTitleSection from "../../../components/coinpage/CoinPageTitleSection";
 import ScatterLineGraph from "../../../components/chart/ScatterLineGraph";
 
 export default function CoinPage(props) {
-  const [priceChangeSelect, setPriceChangeSelect] = useState(false);
   const [priceChange, setPriceChange] = useState("7d");
   const [coinHistory, setCoinHistory] = useState([]);
 
@@ -16,7 +14,6 @@ export default function CoinPage(props) {
   }, []);
 
   function changePriceTimeframe(timeframe) {
-    setPriceChangeSelect(false);
     setPriceChange(timeframe);
   }
 
