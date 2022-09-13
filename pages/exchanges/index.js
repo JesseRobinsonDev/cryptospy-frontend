@@ -82,14 +82,12 @@ export default function ExchangesPage(props) {
     <Layout title="Exchanges - CryptoSpy">
       <div className="w-full p-4 px-4">
         <div className="flex flex-col gap-1 p-1">
-          <span className="text-6xl text-white font-light">
-            The Top Cryptocurrency Exchanges
-          </span>
+          <span className="text-6xl text-white font-light">Exchanges</span>
           <p className="text-xl text-neutral-500 font-semibold">
             Data set from the CoinGecko cryptocurrency API
           </p>
         </div>
-        <div className="flex flex-row gap-1 border-b p-2 border-neutral-800">
+        <div className="flex flex-col md:flex-row gap-1 border-b p-2 border-neutral-800">
           <PageNavigationBar
             url={`${process.env.NEXT_PUBLIC_SITEURL}/exchanges?perpage=${props.perpage}`}
             page={props.page}
@@ -171,15 +169,13 @@ export default function ExchangesPage(props) {
               <Link
                 href={`${process.env.NEXT_PUBLIC_SITEURL}/exchange/${exchange.id}`}
               >
-                <a className="flex flex-row col-span-2 items-center gap-1">
+                <a className="flex flex-row col-span-2 items-center gap-1 text-white hover:text-green-600 duration-500">
                   <img
                     src={exchange.image}
                     alt={exchange.name}
                     className="w-9 h-9"
                   />
-                  <span className="text-white text-xl font-light">
-                    {exchange.name}
-                  </span>
+                  <span className="text-xl font-light">{exchange.name}</span>
                 </a>
               </Link>
               <span className="text-white">
