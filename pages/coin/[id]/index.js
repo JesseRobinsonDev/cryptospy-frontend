@@ -61,7 +61,7 @@ export default function CoinPage(props) {
           tab="Overview"
         />
         <div className="flex flex-col gap-1 border-b border-neutral-800">
-          <div className="flex flex-row items-center gap-1 border-b border-neutral-800 py-1">
+          <div className="flex flex-col md:flex-row items-center gap-1 border-b border-neutral-800 py-1">
             <span className="text-3xl text-white font-light">
               {props.coinData.localization[props.language]} Price Chart
             </span>

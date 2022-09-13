@@ -59,7 +59,7 @@ export default function CoinHistoryPage(props) {
           tab="History"
         />
         <div className="w-full">
-          <div className="flex flex-row gap-4 p-2">
+          <div className="flex flex-row flex-wrap gap-4 p-2">
             <button
               onClick={() => {
                 getCoinOHLC(1);

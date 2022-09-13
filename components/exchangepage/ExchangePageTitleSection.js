@@ -3,8 +3,8 @@ import Link from "next/link";
 export default function ExchangePageTitleSection(props) {
   return (
     <section className="flex flex-col">
-      <div className="flex flex-row">
-        <div className="w-4/12 flex flex-col gap-1">
+      <div className="flex flex-col lg:flex-row">
+        <div className="w-full lg:w-5/12 flex flex-col gap-1">
           <div className="flex flex-row gap-1 items-center">
             <img src={props.exchangeData.image} className="w-12 h-12" />
             <span className="text-4xl font-semibold text-white">
@@ -35,7 +35,7 @@ export default function ExchangePageTitleSection(props) {
             </a>
           </Link>
         </div>
-        <div className="w-8/12 flex flex-col">
+        <div className="w-full lg:w-7/12 flex flex-col">
           <span className="text-zinc-400 text-3xl font-light">
             24h BTC Volume
           </span>
@@ -48,7 +48,7 @@ export default function ExchangePageTitleSection(props) {
           </span>
         </div>
       </div>
-      <div className="flex flex-row">
+      <div className="flex flex-row flex-wrap gap-1">
         <span>{props.exchangeData.twitter_handle}</span>
         <span>{props.exchangeData.telegram_url}</span>
         <span>{props.exchangeData.slack_url}</span>
