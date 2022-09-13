@@ -169,7 +169,7 @@ export default function Home(props) {
             Your gateway to cyrptocurrency statistics, prices, and information.
           </p>
         </div>
-        <ul className="w-full px-4 grid grid-cols-2 gap-4">
+        <ul className="w-full px-4 grid grid-cols-1 lg:grid-cols-2 gap-4">
           <li className="w-full h-auto p-2 bg-neutral-800 rounded-lg">
             <span className="text-gray-100 text-lg font-semibold">
               Trending
@@ -241,7 +241,7 @@ export default function Home(props) {
           </li>
         </ul>
         <div>
-          <div className="flex flex-row gap-2">
+          <div className="flex flex-col lg:flex-row gap-2">
             <PageNavigationBar
               url={`${process.env.NEXT_PUBLIC_SITEURL}/?perpage=${props.perpage}&currency=${props.currency}&category=${props.category}`}
               page={props.page}
@@ -283,7 +283,7 @@ export default function Home(props) {
               ]}
               toggleState={perPageDropdown}
             />
-            <ul className="flex flex-row items-center gap-1">
+            <ul className="flex flex-row flex-wrap items-center gap-1">
               {props.categories.slice(0, 4).map((category) => (
                 <li
                   key={category.id}
@@ -305,7 +305,7 @@ export default function Home(props) {
               </li>
             </ul>
           </div>
-          <header className="w-full h-12 sticky top-0 grid grid-cols-10 items-center justify-between text-center gap-2 overflow-hidden bg-neutral-900 border-b border-neutral-800">
+          <header className="w-full h-12 sticky top-0 grid grid-cols-10 items-center justify-between text-center gap-2 overflow-hidden bg-neutral-900 border-b border-neutral-800 z-40">
             <button
               onClick={() => sortCoinsData("coin")}
               className="text-gray-200 hover:text-green-500 duration-300"

@@ -93,8 +93,8 @@ export default function CoinPageTitleSection(props) {
 
   return (
     <section className="flex flex-col gap-1">
-      <div className="flex flex-row">
-        <div className="w-5/12 flex flex-col gap-2">
+      <div className="flex flex-col lg:flex-row">
+        <div className="w-full lg:w-5/12 flex flex-col gap-2 lg:pb-0 pb-1 lg:border-0 border-b border-neutral-800">
           <div className="flex flex-row items-center gap-2">
             <img src={props.coinData.image.large} className="w-12 h-12" />
             <span className="text-4xl font-semibold text-white">
@@ -213,7 +213,7 @@ export default function CoinPageTitleSection(props) {
             </div>
           </div>
         </div>
-        <div className="w-7/12 flex flex-col">
+        <div className="w-full lg:w-7/12 flex flex-col">
           <div className="flex flex-col">
             <div className="flex flex-row items-center gap-2">
               <span className="text-zinc-400 text-3xl font-light">
@@ -234,7 +234,7 @@ export default function CoinPageTitleSection(props) {
                 toggleState={priceChangeSelect}
               />
             </div>
-            <div className="flex flex-row items-center gap-1">
+            <div className="flex flex-row items-center gap-1 lg:border-b-0 border-b border-neutral-800">
               <span className="text-white text-4xl font-semibold">
                 $
                 {props.coinData.market_data.current_price[props.currency]
@@ -277,8 +277,8 @@ export default function CoinPageTitleSection(props) {
                 </span>
               </div>
             </div>
-            <div className="flex flex-row gap-4  border-b border-neutral-800">
-              <div className="flex flex-row gap-1">
+            <div className="flex flex-col lg:flex-row gap-0 lg:gap-4 border-0 lg:border-b lg:border-neutral-800">
+              <div className="flex flex-row gap-1 lg:border-0 border-b border-neutral-800">
                 <span className="text-zinc-400 font-semibold">Low:</span>
                 <span className="text-white font-semibold">
                   $
@@ -290,7 +290,7 @@ export default function CoinPageTitleSection(props) {
                     : coinLow.toFixed(7)}
                 </span>
               </div>
-              <div className="flex flex-row gap-1">
+              <div className="flex flex-row gap-1 lg:border-0 border-b border-neutral-800">
                 <span className="text-zinc-400 font-semibold">Start:</span>
                 <span className="text-white font-semibold">
                   $
@@ -302,7 +302,7 @@ export default function CoinPageTitleSection(props) {
                     : coinInitial.toFixed(7)}
                 </span>
               </div>
-              <div className="flex flex-row gap-1">
+              <div className="flex flex-row gap-1 lg:border-0 border-b border-neutral-800">
                 <span className="text-zinc-400 font-semibold">High:</span>
                 <span className="text-white font-semibold">
                   $
@@ -316,8 +316,8 @@ export default function CoinPageTitleSection(props) {
               </div>
             </div>
           </div>
-          <div className="flex flex-row gap-4">
-            <div className="w-1/2 flex flex-col">
+          <div className="flex flex-col md:flex-row gap-0 md:gap-4">
+            <div className="w-full md:w-1/2 flex flex-col">
               <div className="flex flex-row justify-between border-b border-neutral-800">
                 <span className="text-zinc-400 font-semibold">Market Cap</span>
                 <span className="text-white">
@@ -359,7 +359,7 @@ export default function CoinPageTitleSection(props) {
                 </span>
               </div>
             </div>
-            <div className="w-1/2 flex flex-col">
+            <div className="w-full md:w-1/2 flex flex-col">
               <div className="flex flex-row justify-between border-b border-neutral-800">
                 <span className="text-zinc-400 font-semibold">
                   Circulating Supply
